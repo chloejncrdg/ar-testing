@@ -18,7 +18,7 @@ function App() {
   const { tools } = data;
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
-  const [showInstruction, setShowInstruction] = useState(true); // State to control visibility
+
 
   const store = createXRStore();
 
@@ -34,9 +34,7 @@ function App() {
     setCanvasKey(Date.now());
   };
 
-  const handleOkClick = () => {
-    setShowInstruction(false); // Hide the instruction text and button
-  };
+
 
   return (
     <div className="px-12 md:px-56">
@@ -102,17 +100,6 @@ function App() {
                     <XR store={store}>
                       <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
-                        {showInstruction && (
-                          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white p-4 shadow-lg rounded-md">
-                            <p className="text-center mb-4">Tilt your phone down to show the object</p>
-                            <button
-                              onClick={handleOkClick}
-                              className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                            >
-                              Ok
-                            </button>
-                          </div>
-                        )}
                         <button
                           onClick={() => store.getState().session?.end()}
                           className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
