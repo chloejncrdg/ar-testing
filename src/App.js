@@ -96,6 +96,7 @@ function App() {
                   <OrbitControls />
                   <Resize>
                     <XR store={store}>
+                    <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
                         <button
                           onClick={() => store.destroy()}
@@ -103,7 +104,6 @@ function App() {
                         >
                           Exit AR
                         </button>
-                        <Tool modelPath={selectedTool.modelPath} />
                       </XRDomOverlay>
                     </XR>
                   </Resize>
