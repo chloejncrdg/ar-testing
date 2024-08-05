@@ -97,10 +97,10 @@ function App() {
                   <Resize>
                     <XR store={store}>
                       <Tool modelPath={selectedTool.modelPath} />
-                      <XRDomOverlay className="absolute inset-0 flex items-center justify-center">
+                      <XRDomOverlay className="absolute inset-0">
                         <button
                           onClick={() => store.destroy()}
-                          className="absolute top-2 right-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                          className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
                         >
                           Exit AR
                         </button>
