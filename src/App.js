@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useRef } from 'react';
 import './App.css';
 
 // DATA
@@ -8,22 +8,30 @@ import data from './data.json';
 import Tool from './Tool';
 
 // 3D
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls, Resize } from '@react-three/drei';
 
 // XR
 import { XR, createXRStore, XRDomOverlay } from '@react-three/xr';
 
+// Function to handle detected planes
+const handlePlaneDetection = (plane) => {
+  console.log('Detected plane:', plane);
+  // Handle positioning of 3D model here if needed
+};
+
 function App() {
   const { tools } = data;
-
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
 
-  const store = createXRStore();
-
-
-
+  // Create XR store with plane detection configuration
+  const store = createXRStore({
+    detectedPlane: {
+      enabled: true,
+      onPlaneDetected: handlePlaneDetection,
+    },
+  });
 
   const handleToolChange = (event) => {
     const toolId = event.target.value;
@@ -99,7 +107,7 @@ function App() {
                   <OrbitControls />
                   <Resize>
                     <XR store={store}>
-                    <Tool modelPath={selectedTool.modelPath} />
+                      <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
                         <button
                           onClick={() => store.getState().session?.end()}
