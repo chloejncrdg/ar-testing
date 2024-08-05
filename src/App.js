@@ -19,6 +19,7 @@ function App() {
 
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
+  const [isAR, setIsAR] = useState(false);
 
   const store = createXRStore();
 
@@ -32,6 +33,16 @@ function App() {
   const handleToolClick = (tool) => {
     setSelectedTool(tool);
     setCanvasKey(Date.now());
+  };
+
+  const enterAR = () => {
+    store.enterAR();
+    setIsAR(true);
+  };
+
+  const exitAR = () => {
+    store.destroy();
+    setIsAR(false);
   };
 
   return (
@@ -75,7 +86,11 @@ function App() {
                   </div>
                 }
               >
-                <button onClick={() => store.enterAR()}>Enter AR</button>
+                {!isAR && (
+                  <button onClick={enterAR} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md">
+                    Enter AR
+                  </button>
+                )}
                 <Canvas key={canvasKey}>
                   <ambientLight intensity={0.4} />
                   <directionalLight
@@ -97,14 +112,16 @@ function App() {
                   <Resize>
                     <XR store={store}>
                       <Tool modelPath={selectedTool.modelPath} />
-                      <XRDomOverlay className="absolute inset-0">
-                        <button
-                          onClick={() => store.destroy()}
-                          className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
-                        >
-                          Exit AR
-                        </button>
-                      </XRDomOverlay>
+                      {isAR && (
+                        <XRDomOverlay className="absolute inset-0">
+                          <button
+                            onClick={exitAR}
+                            className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
+                          >
+                            Exit AR
+                          </button>
+                        </XRDomOverlay>
+                      )}
                     </XR>
                   </Resize>
                 </Canvas>
