@@ -105,6 +105,8 @@ function App() {
                         >
                           Exit AR
                         </button>
+                      </XRDomOverlay>
+                      <XRDomOverlay>
                         {showInstruction && (
                           <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white p-4 shadow-lg rounded-md">
                             <p className="text-center mb-4">Tilt your phone down to show the object</p>
