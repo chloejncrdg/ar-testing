@@ -100,7 +100,7 @@ function App() {
                       <XRDomOverlay className="absolute inset-0 flex items-center justify-center">
                         <button
                           onClick={() => store.destroy()}
-                          className="absolute top-2 right-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                          className="absolute top-2 right-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                         >
                           Exit AR
                         </button>
