@@ -1,0 +1,19 @@
+{
+    "tools" : [
+        {
+            "id": 1,
+            "title" : "Tool1",
+            "modelPath": "https://introbirds-object-upload.s3.ap-southeast-1.amazonaws.com/0145e3dd416fcf3e6417d399929fd739.glb" 
+        },
+        {
+            "id": 2,
+            "title" : "Tool2",
+            "modelPath": "https://introbirds-object-upload.s3.ap-southeast-1.amazonaws.com/0805e7bc6fab882eade13675d210ba32.glb" 
+        },
+        {
+            "id": 3,
+            "title" : "Tool3",
+            "modelPath": "https://introbirds-object-upload.s3.ap-southeast-1.amazonaws.com/0b72b3d192e35f6b614716edcaaac18a.glb" 
+        }
+    ]
+}
