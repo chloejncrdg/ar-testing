@@ -14,24 +14,14 @@ import { OrbitControls, Resize } from '@react-three/drei';
 // XR
 import { XR, createXRStore, XRDomOverlay } from '@react-three/xr';
 
-// Function to handle detected planes
-const handlePlaneDetection = (plane) => {
-  console.log('Detected plane:', plane);
-  // Handle positioning of 3D model here if needed
-};
 
 function App() {
   const { tools } = data;
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
+  const [showInstruction, setShowInstruction] = useState(true); // State to control visibility
 
-  // Create XR store with plane detection configuration
-  const store = createXRStore({
-    detectedPlane: {
-      enabled: true,
-      onPlaneDetected: handlePlaneDetection,
-    },
-  });
+  const store = createXRStore();
 
   const handleToolChange = (event) => {
     const toolId = event.target.value;
@@ -43,6 +33,10 @@ function App() {
   const handleToolClick = (tool) => {
     setSelectedTool(tool);
     setCanvasKey(Date.now());
+  };
+
+  const handleOkClick = () => {
+    setShowInstruction(false); // Hide the instruction text and button
   };
 
   return (
@@ -109,6 +103,17 @@ function App() {
                     <XR store={store}>
                       <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
+                        {showInstruction && (
+                          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white p-4 shadow-lg rounded-md">
+                            <p className="text-center mb-4">Tilt your phone down to show the object</p>
+                            <button
+                              onClick={handleOkClick}
+                              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                            >
+                              Ok
+                            </button>
+                          </div>
+                        )}
                         <button
                           onClick={() => store.getState().session?.end()}
                           className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
