@@ -8,7 +8,7 @@ import data from './data.json';
 import Tool from './Tool';
 
 // 3D
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Resize } from '@react-three/drei';
 
 // XR
@@ -19,6 +19,7 @@ function App() {
 
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
+  const [cameraPosition, setCameraPosition] = useState([0, 0, 5]); // Default camera position
 
   const store = createXRStore();
 
@@ -32,6 +33,10 @@ function App() {
   const handleToolClick = (tool) => {
     setSelectedTool(tool);
     setCanvasKey(Date.now());
+  };
+
+  const resetCameraPosition = () => {
+    setCameraPosition([0, 0, 5]); // Reset to initial camera position
   };
 
   return (
@@ -93,13 +98,16 @@ function App() {
                   />
                   <directionalLight position={[1, -10, -1]} intensity={2} />
                   <directionalLight position={[-1, 0, 1]} intensity={1.3} color="#D68270" />
-                  <OrbitControls />
+                  <OrbitControls position={cameraPosition} />
                   <Resize>
                     <XR store={store}>
-                    <Tool modelPath={selectedTool.modelPath} />
+                      <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
                         <button
-                          onClick={() => store.destroy()}
+                          onClick={() => {
+                            store.destroy();
+                            resetCameraPosition();
+                          }}
                           className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
                         >
                           Exit AR
