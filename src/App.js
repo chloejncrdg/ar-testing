@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState } from 'react';
 import './App.css';
 
 // DATA
@@ -23,9 +23,9 @@ function App() {
 
   const store = createXRStore();
 
-  useEffect(() => {
-    console.log(supported)
-  }, [supported]);
+  // useEffect(() => {
+  //   console.log(supported)
+  // }, [supported]);
 
   const handleToolChange = (event) => {
     const toolId = event.target.value;
