@@ -102,7 +102,7 @@ function App() {
                     <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
                         <div className="absolute top-10 left-0 w-full bg-black bg-opacity-50 p-4">
-                          <p className="text-white text-center">Tilt the phone downwards to show object</p>
+                          <p className="text-white text-center text-sm">Tilt the phone downwards to show object</p>
                         </div>
                         <button
                           onClick={() => store.getState().session?.end()}
