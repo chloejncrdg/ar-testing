@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import './App.css';
 
 // DATA
@@ -12,7 +12,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Resize } from '@react-three/drei';
 
 // XR
-import { XR, createXRStore, XRDomOverlay } from '@react-three/xr';
+import { XR, createXRStore, XRDomOverlay, useSessionSupported } from '@react-three/xr';
 
 function App() {
   const { tools } = data;
@@ -22,7 +22,7 @@ function App() {
 
   const store = createXRStore();
 
-
+  const isSessionSupported = useSessionSupported()
 
 
   const handleToolChange = (event) => {
@@ -68,7 +68,7 @@ function App() {
             ))}
           </select>
         </div>
-        <div className="w-full md:w-3/4 bg-gray-200 h-[60vh] md:h-[80vh]">
+        <div className="flex flex-col w-full md:w-3/4 bg-gray-200 h-[60vh] md:h-[80vh]">
           {selectedTool ? (
             selectedTool.modelPath ? (
               <Suspense
@@ -78,7 +78,6 @@ function App() {
                   </div>
                 }
               >
-                <button onClick={() => store.enterAR()}>Enter AR</button>
                 <Canvas key={canvasKey}>
                   <ambientLight intensity={0.4} />
                   <directionalLight
@@ -115,6 +114,7 @@ function App() {
                   </Resize>
                 </Canvas>
               </Suspense>
+              
             ) : (
               <div className="text-center text-gray-700 font-sf-regular">
                 3D model of {selectedTool.title} not yet available
@@ -124,6 +124,13 @@ function App() {
             <div className="text-center text-gray-700">No tool selected</div>
           )}
         </div>
+      </div>
+      <div className='md:w-full flex justify-center items-center'>
+        {isSessionSupported ? (
+          <button className="md:ml-56 my-6 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={() => store.enterAR()}>Enter AR</button>
+        ) : (
+          <div className="md:ml-56 my-6 px-4 py-2 bg-gray-600 text-white rounded-md">AR unsupported</div>
+        )}
       </div>
     </div>
   );
