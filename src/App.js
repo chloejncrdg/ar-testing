@@ -12,20 +12,18 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Resize } from '@react-three/drei';
 
 // XR
-import { XR, createXRStore, XRDomOverlay, useSessionSupported } from '@react-three/xr';
+import { XR, createXRStore, XRDomOverlay } from '@react-three/xr';
 
 function App() {
   const { tools } = data;
 
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
-  const supported = useSessionSupported('immersive-ar');
 
   const store = createXRStore();
 
-  // useEffect(() => {
-  //   console.log(supported)
-  // }, [supported]);
+
+
 
   const handleToolChange = (event) => {
     const toolId = event.target.value;
@@ -70,7 +68,7 @@ function App() {
             ))}
           </select>
         </div>
-        <div className="flex flex-col w-full md:w-3/4 bg-gray-200 h-[60vh] md:h-[80vh]">
+        <div className="w-full md:w-3/4 bg-gray-200 h-[60vh] md:h-[80vh]">
           {selectedTool ? (
             selectedTool.modelPath ? (
               <Suspense
@@ -80,6 +78,7 @@ function App() {
                   </div>
                 }
               >
+                <button onClick={() => store.enterAR()}>Enter AR</button>
                 <Canvas key={canvasKey}>
                   <ambientLight intensity={0.4} />
                   <directionalLight
@@ -100,11 +99,8 @@ function App() {
                   <OrbitControls />
                   <Resize>
                     <XR store={store}>
-                      <Tool modelPath={selectedTool.modelPath} />
+                    <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
-                        <div className="absolute top-10 left-0 w-full bg-black bg-opacity-50 p-4">
-                          <p className="text-white text-center text-sm">Tilt the phone downwards to show object</p>
-                        </div>
                         <button
                           onClick={() => store.getState().session?.end()}
                           className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
@@ -125,20 +121,6 @@ function App() {
             <div className="text-center text-gray-700">No tool selected</div>
           )}
         </div>
-      </div>
-      <div className="md:w-full flex justify-center items-center">
-        {supported === undefined ? (
-          <div className="md:ml-56 my-6 px-4 py-2 bg-gray-600 text-white rounded-md">Checking AR support...</div>
-        ) : supported ? (
-          <button
-            className="md:ml-56 my-6 px-4 py-2 bg-blue-500 text-white rounded-md"
-            onClick={() => store.enterAR()}
-          >
-            Enter AR
-          </button>
-        ) : (
-          <div className="md:ml-56 my-6 px-4 py-2 bg-gray-600 text-white rounded-md">AR unsupported</div>
-        )}
       </div>
     </div>
   );
