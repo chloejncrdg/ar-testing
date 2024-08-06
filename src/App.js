@@ -1,4 +1,4 @@
-import { Suspense, useState, useRef } from 'react';
+import { Suspense, useState } from 'react';
 import './App.css';
 
 // DATA
@@ -16,10 +16,14 @@ import { XR, createXRStore, XRDomOverlay } from '@react-three/xr';
 
 function App() {
   const { tools } = data;
+
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
 
   const store = createXRStore();
+
+
+
 
   const handleToolChange = (event) => {
     const toolId = event.target.value;
@@ -32,29 +36,6 @@ function App() {
     setSelectedTool(tool);
     setCanvasKey(Date.now());
   };
-
- function DraggableTool({ modelPath }) {
-    const isDraggingRef = useRef(false);
-    const toolRef = useRef(null);
-
-    return (
-      <mesh
-        ref={toolRef}
-        onPointerDown={(e) => {
-          if (isDraggingRef.current) return;
-          isDraggingRef.current = true;
-        }}
-        onPointerMove={(e) => {
-          if (!isDraggingRef.current) return;
-          toolRef.current.position.x = e.point.x;
-          toolRef.current.position.y = e.point.y;
-        }}
-        onPointerUp={() => (isDraggingRef.current = false)}
-      >
-        <Tool modelPath={modelPath} />
-      </mesh>
-    );
-  }
 
   return (
     <div className="px-12 md:px-56">
@@ -118,8 +99,11 @@ function App() {
                   <OrbitControls />
                   <Resize>
                     <XR store={store}>
-                      <DraggableTool modelPath={selectedTool.modelPath} />
+                    <Tool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
+                        <div className="absolute top-10 left-0 w-full bg-black bg-opacity-50 p-4">
+                          <p className="text-white text-center">Tilt the phone downwards to show object</p>
+                        </div>
                         <button
                           onClick={() => store.getState().session?.end()}
                           className="absolute bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
