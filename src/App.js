@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useRef } from 'react';
 import './App.css';
 
 // DATA
@@ -19,7 +19,6 @@ function App() {
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
 
-
   const store = createXRStore();
 
   const handleToolChange = (event) => {
@@ -34,7 +33,28 @@ function App() {
     setCanvasKey(Date.now());
   };
 
+  function DraggableTool({ modelPath }) {
+    const isDraggingRef = useRef(false);
+    const toolRef = useRef<Tool>(null);
 
+    return (
+      <mesh
+        ref={toolRef}
+        onPointerDown={(e) => {
+          if (isDraggingRef.current) return;
+          isDraggingRef.current = true;
+          toolRef.current.position.copy(e.point);
+        }}
+        onPointerMove={(e) => {
+          if (!isDraggingRef.current) return;
+          toolRef.current.position.copy(e.point);
+        }}
+        onPointerUp={(e) => (isDraggingRef.current = false)}
+      >
+        <Tool modelPath={modelPath} />
+      </mesh>
+    );
+  }
 
   return (
     <div className="px-12 md:px-56">
@@ -98,7 +118,7 @@ function App() {
                   <OrbitControls />
                   <Resize>
                     <XR store={store}>
-                      <Tool modelPath={selectedTool.modelPath} />
+                      <DraggableTool modelPath={selectedTool.modelPath} />
                       <XRDomOverlay className="absolute inset-0">
                         <button
                           onClick={() => store.getState().session?.end()}
