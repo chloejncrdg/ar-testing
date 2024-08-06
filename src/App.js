@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import './App.css';
 
 // DATA
@@ -19,11 +19,16 @@ function App() {
 
   const [selectedTool, setSelectedTool] = useState(tools[0]);
   const [canvasKey, setCanvasKey] = useState(0);
+  const supported = useSessionSupported()
+  
 
   const store = createXRStore();
 
-  const isSessionSupported = useSessionSupported()
+  useEffect(() => {
+    console.log(supported)
+  }, [supported]);
 
+  
 
   const handleToolChange = (event) => {
     const toolId = event.target.value;
@@ -126,11 +131,7 @@ function App() {
         </div>
       </div>
       <div className='md:w-full flex justify-center items-center'>
-        {isSessionSupported ? (
-          <button className="md:ml-56 my-6 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={() => store.enterAR()}>Enter AR</button>
-        ) : (
-          <div className="md:ml-56 my-6 px-4 py-2 bg-gray-600 text-white rounded-md">AR unsupported</div>
-        )}
+        <button className="md:ml-56 my-6 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={() => store.enterAR()}>Enter AR</button>
       </div>
     </div>
   );
