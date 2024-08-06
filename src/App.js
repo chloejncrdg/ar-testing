@@ -33,7 +33,7 @@ function App() {
     setCanvasKey(Date.now());
   };
 
-  function DraggableTool({ modelPath }) {
+ function DraggableTool({ modelPath }) {
     const isDraggingRef = useRef(false);
     const toolRef = useRef(null);
 
@@ -43,13 +43,13 @@ function App() {
         onPointerDown={(e) => {
           if (isDraggingRef.current) return;
           isDraggingRef.current = true;
-          toolRef.current.position.copy(e.point);
         }}
         onPointerMove={(e) => {
           if (!isDraggingRef.current) return;
-          toolRef.current.position.copy(e.point);
+          toolRef.current.position.x = e.point.x;
+          toolRef.current.position.y = e.point.y;
         }}
-        onPointerUp={(e) => (isDraggingRef.current = false)}
+        onPointerUp={() => (isDraggingRef.current = false)}
       >
         <Tool modelPath={modelPath} />
       </mesh>
