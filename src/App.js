@@ -131,7 +131,11 @@ function App() {
         </div>
       </div>
       <div className='md:w-full flex justify-center items-center'>
-        <button className="md:ml-56 my-6 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={() => store.enterAR()}>Enter AR</button>
+        {!supported ? (
+          <div className="md:ml-56 my-6 px-4 py-2 bg-gray-600 text-white rounded-md">AR unsupported</div>
+        ) : (
+          <button className="md:ml-56 my-6 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={() => store.enterAR()}>Enter AR</button>
+        )}
       </div>
     </div>
   );
