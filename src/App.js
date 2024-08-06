@@ -35,7 +35,7 @@ function App() {
 
   function DraggableTool({ modelPath }) {
     const isDraggingRef = useRef(false);
-    const toolRef = useRef<Tool>(null);
+    const toolRef = useRef(null);
 
     return (
       <mesh
